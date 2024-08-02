@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de Data e Hora com Previsão do Tempo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            background: url('https://images.unsplash.com/photo-1493770348161-369560ae357d?fit=crop&w=1920&h=1080') no-repeat center center fixed;
+            background-size: cover;
+            text-align: center;
+            padding: 50px;
+        }
+        #container {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: auto;
+        }
+        h1 {
+            color: #006400;
+        }
+        .button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        #weather {
+            margin-top: 20px;
+        }
+        iframe {
+            margin-top: 20px;
+            width: 100%;
+            max-width: 560px;
+            height: 315px;
+            border: none;
+        }
+        .message-container {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 5px;
+            margin: 20px auto;
+            max-width: 600px;
+        }
+        .content {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px auto;
+            max-width: 800px;
+        }
+        .back-to-top {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .back-to-top:hover {
+            background-color: #45a049;
+        }
+        footer {
+            margin-top: 50px;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 5px;
+            max-width: 600px;
+            margin: 20px auto 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1>Data e Hora Atual</h1>
+        <p id="datetime"></p>
+        <button class="button" onclick="showWeather()">Mostrar Previsão do Tempo</button>
+        <div id="weather"></div>
+        <p>Digite o nome da cidade para ver a previsão:</p>
+        <input type="text" id="city" placeholder="Cidade" oninput="autocomplete()">
+        <button class="button" onclick="searchWeather()">Buscar</button>
+        <p id="city-name"></p>
+    </div>
+
+    <div class="message-container">
+        <h2>Hora do café, veja a previsão do tempo escutando Mozart</h2>
+    </div>
+    
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/SWZvus6-6Yo?si=lzenTOl1ORbw7Pnr" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+    <div class="content">
+        <h2>Do Campo para a Cidade</h2>
+        <p>
+            A transição do campo para a cidade é um fenômeno global que tem ocorrido de maneira acelerada nas últimas décadas. Este movimento migratório é impulsionado por diversas razões, como a busca por melhores oportunidades de emprego, acesso a serviços de saúde e educação, e a busca por uma vida mais confortável e moderna.
+        </p>
+        <p>
+            No campo, as atividades econômicas são predominantemente agrícolas, com uma rotina voltada para o cultivo da terra e a criação de animais. A vida rural é muitas vezes associada a um ritmo mais lento e a uma comunidade mais unida. Entretanto, as limitações quanto a infraestrutura e oportunidades podem levar os jovens a buscar novas perspectivas nas áreas urbanas.
+        </p>
+        <p>
+            A cidade, por outro lado, oferece uma vasta gama de serviços e oportunidades. A urbanização traz consigo a promessa de melhores empregos, acesso a uma ampla variedade de bens e serviços, além de uma vida culturalmente rica. No entanto, este movimento também apresenta desafios, como o aumento da desigualdade, a poluição e a superlotação das áreas urbanas.
+        </p>
+        <p>
+            A migração do campo para a cidade é um processo complexo que reflete as mudanças econômicas, sociais e culturais de um país. É essencial que haja políticas públicas que apoiem tanto o desenvolvimento rural quanto a integração dos migrantes nas áreas urbanas, garantindo uma transição harmoniosa e sustentável.
+        </p>
+        <a href="#" class="back-to-top" onclick="scrollToTop()">Voltar ao topo</a>
+    </div>
+
+    <footer>
+        <p>Organização escola Otalipio 3º A regular</p>
+    </footer>
+
+    <script>
+        const API_KEY = '3986f7f7e3fe6d81b93a8cb38f795c43'; // Chave da API do OpenWeatherMap
+
+        function updateDateTime() {
+            const now = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', weekday: 'long' };
+            document.getElementById('datetime').innerText = now.toLocaleDateString('pt-BR', options);
+        }
+
+        function showWeather() {
+            const city = 'São Paulo'; // Cidade fixa para exibir a previsão
+            fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&lang=pt_br&units=metric`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.cod === 200) {
+                        document.getElementById('weather').innerHTML = `
+                            <h2>Previsão do Tempo em ${city}</h2>
+                            <p>Temperatura: ${data.main.temp}°C</p>
+                            <p>Condição: ${data.weather[0].description}</p>
+                            <p>Umidade: ${data.main.humidity}%</p>
+                            <p>Vento: ${data.wind.speed} m/s</p>
+                        `;
+                    } else {
+                        document.getElementById('weather').innerHTML = `<p>${data.message || 'Cidade não encontrada.'}</p>`;
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('weather').innerHTML = `<p>Erro ao buscar a previsão do tempo: ${error.message}</p>`;
+                });
+        }
+
+        function searchWeather() {
+            const city = document.getElementById('city').value.trim();
+            if (!city) {
+                alert('Por favor, insira o nome da cidade.');
+                return;
+            }
+            document.getElementById('city-name').innerText = `Previsão do Tempo para ${city}`;
+            fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&lang=pt_br&units=metric`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.cod === 200) {
+                        document.getElementById('weather').innerHTML = `
+                            <h2>Previsão do Tempo em ${city}</h2>
+                            <p>Temperatura: ${data.main.temp}°C</p>
+                            <p>Condição: ${data.weather[0].description}</p>
+                            <p>Umidade: ${data.main.humidity}%</p>
+                            <p>Vento: ${data.wind.speed} m/s</p>
+                        `;
+                    } else {
+                        document.getElementById('weather').innerHTML = `<p>${data.message || 'Cidade não encontrada.'}</p>`;
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('weather').innerHTML = `<p>Erro ao buscar a previsão do tempo: ${error.message}</p>`;
+                });
+        }
+
+        function autocomplete() {
+            const input = document.getElementById('city');
+            const value = input.value.trim();
+            if (!value) {
+                closeAllLists();
+                return;
+            }
+
+            fetch(`https://api.openweathermap.org/data/2.5/find?q=${value}&appid=${API_KEY}&lang=pt_br`)
+                .then(response => response.json())
+                .then(data => {
+                    closeAllLists();
+                    if (!data.list.length) {
+                        return;
+                    }
+                    const list = document.createElement('DIV');
+                    list.setAttribute('id', 'autocomplete-list');
+                    list.setAttribute('class', 'autocomplete-items');
+                    input.parentNode.appendChild(list);
+
+                    data.list.forEach(item => {
+                        const div = document.createElement('DIV');
+                        div.innerHTML = `${item.name}, ${item.sys.country}`;
+                        div.addEventListener('click', () => {
+                            input.value = `${item.name}, ${item.sys.country}`;
+                            closeAllLists();
+                        });
+                        list.appendChild(div);
+                    });
+                })
+                .catch(error => console.error('Erro ao buscar sugestões de cidades:', error));
+        }
+
+        function closeAllLists() {
+            const items = document.getElementsByClassName('autocomplete-items');
+            while (items.length) {
+                items[0].parentNode.removeChild(items[0]);
+            }
+        }
+
+        document.addEventListener('click', (e) => {
+            if (e.target !== document.getElementById('city')) {
+                closeAllLists();
+            }
+        });
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        setInterval(updateDateTime, 1000);  // Atualiza a data e a hora a cada segundo
+        updateDateTime(); // Atualiza imediatamente ao carregar
+    </script>
+</body>
+</html>
