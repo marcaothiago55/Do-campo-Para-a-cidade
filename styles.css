@@ -1,0 +1,146 @@
+html {
+  font-size: 16px;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  padding: 1em 10px;
+  background: rgba(15, 123, 253, 0.1);
+}
+
+.hidden {
+  display: none;
+}
+
+.logo {
+  text-align: center;
+  width: 100%;
+  height: auto;
+  padding: 10px;
+}
+.logo img {
+  position: relative;
+  height: auto;
+  max-height: 80px;
+  width: auto;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 1em;
+}
+table th, table td {
+  border: 1px solid rgba(15, 123, 253, 0.05);
+  padding: 10px 15px;
+  text-align: center;
+  width: auto;
+}
+table th:nth-child(2),
+table th:nth-child(3) {
+  min-width: 16.6666%;
+  width: 16.6666%;
+}
+table tr:nth-child(odd) {
+  background: rgba(85, 102, 173, 0.15);
+}
+table tr:nth-child(even) {
+  background: rgba(85, 102, 173, 0.03);
+}
+
+h2 {
+  text-align: center;
+  margin: 15px 0 1em;
+  font-weight: 500;
+  color: #5566AD;
+}
+
+#total {
+  font-size: 18px;
+}
+
+* {
+  color: #3b477a;
+}
+
+var {
+  font-style: normal;
+}
+
+input {
+  width: auto;
+  max-width: 30px;
+}
+
+input[type="number"] {
+  width: 100%;
+  min-width: 100px;
+  height: 50px;
+  padding: 5px;
+}
+
+.bloco {
+  background: #fff;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  max-width: 1000px;
+  margin: 0 auto;
+  overflow: auto;
+}
+
+p {
+  text-align: center;
+}
+
+#pontos {
+  text-align: center;
+}
+
+.rank {
+  text-align: center;
+}
+.rank h3 span {
+  font-weight: 300;
+}
+.rank img {
+  width: auto;
+  max-height: 150px;
+  padding: 10px;
+}
+
+.nav-item .nav-link {
+  color: #5566AD;
+}
+.nav-item .nav-link.active {
+  background: #5566AD;
+}
+
+.table-responsive {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+}
+
+@media (max-width: 550px) {
+  body {
+    padding: 1em 0 0;
+  }
+
+  .bloco {
+    padding: 20px 0;
+    font-size: 14px;
+  }
+
+  th, td {
+    padding: 5px;
+  }
+
+  input[type="number"] {
+    min-width: 60px;
+    padding: 5px;
+    font-size: 12px;
+    height: 40px;
+  }
+}
